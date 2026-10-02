@@ -1,0 +1,27 @@
+# Local secrets and demo state
+.env
+.demo/
+
+# Gradle
+/build/
+/.gradle/
+
+# Pipeline output
+/dist/
+
+# Node (npm-groovy-lint)
+node_modules/
+
+# PHP app
+app/vendor/
+app/reports/
+app/.phpunit.cache/
+app/.php-cs-fixer.cache
+app/infection.log
+
+*.log
+
+# Local tooling
+.claude/
+.idea/
+.serena/
