@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle>
+  <file name="src/Kernel.php">
+    <error line="1" column="1" severity="error" message="Found violation(s) of type: no_unused_imports, single_quote" source="PHP-CS-Fixer.no_unused_imports"/>
+  </file>
+  <file name="src/SemverBump.php">
+    <error line="1" column="1" severity="error" message="Found violation(s) of type: ordered_imports" source="PHP-CS-Fixer.ordered_imports"/>
+    <error line="1" column="1" severity="error" message="Found violation(s) of type: blank_line_before_statement" source="PHP-CS-Fixer.blank_line_before_statement"/>
+  </file>
+</checkstyle>

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage line-rate="1" branch-rate="0" lines-covered="90" lines-valid="90" branches-covered="0" branches-valid="0" complexity="54" version="0.4" timestamp="1790973465">
+  <sources>
+    <source>/workspace/app/src</source>
+  </sources>
+  <packages>
+    <package name="HealthCheck.php" line-rate="1" branch-rate="0" complexity="6">
+      <classes>
+        <class name="App\HealthCheck" filename="HealthCheck.php" line-rate="1" branch-rate="0" complexity="6">
+          <methods>
+            <method name="__construct" signature="ReleaseInfo $release, Closure $tokenProvider" line-rate="1" branch-rate="0" complexity="1">
+              <lines>
+                <line number="22" hits="9"/>
+              </lines>
+            </method>
+            <method name="handle" signature="Request $request" line-rate="1" branch-rate="0" complexity="5">
+              <lines>
+                <line number="26" hits="9"/>
+                <line number="27" hits="9"/>
+                <line number="29" hits="9"/>
+                <line number="30" hits="7"/>
+                <line number="33" hits="2"/>
+                <line number="34" hits="2"/>
+                <line number="35" hits="2"/>
+                <line number="36" hits="2"/>
+                <line number="37" hits="2"/>
+                <line number="38" hits="2"/>
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="22" hits="9"/>
+            <line number="26" hits="9"/>
+            <line number="27" hits="9"/>
+            <line number="29" hits="9"/>
+            <line number="30" hits="7"/>
+            <line number="33" hits="2"/>
+            <line number="34" hits="2"/>
+            <line number="35" hits="2"/>
+            <line number="36" hits="2"/>
+            <line number="37" hits="2"/>
+            <line number="38" hits="2"/>
+          </lines>
+        </class>
+      </classes>
+    </package>
+    <package name="Http/Request.php" line-rate="1" branch-rate="0" complexity="12">
+      <classes>
+        <class name="App\Http\Request" filename="Http/Request.php" line-rate="1" branch-rate="0" complexity="12">
+          <methods>
+            <method name="__construct" signature="string $method, string $path, array $query, array $headers" line-rate="1" branch-rate="0" complexity="1">
+              <lines>
+                <line number="18" hits="5"/>
+              </lines>
+            </method>
+            <method name="fromGlobals" signature="array $server, array $query" line-rate="1" branch-rate="0" complexity="8">
+              <lines>
+                <line number="26" hits="5"/>
+                <line number="27" hits="5"/>
+                <line number="28" hits="5"/>
+                <line number="30" hits="5"/>
+                <line number="31" hits="5"/>
+                <line number="32" hits="3"/>
+                <line number="33" hits="1"/>
+                <line number="37" hits="5"/>
+                <line number="38" hits="5"/>
+                <line number="39" hits="5"/>
+                <line number="40" hits="5"/>
+                <line number="41" hits="5"/>
+                <line number="42" hits="5"/>
+              </lines>
+            </method>
+            <method name="header" signature="string $name" line-rate="1" branch-rate="0" complexity="1">
+              <lines>
+                <line number="47" hits="2"/>
+              </lines>
+            </method>
+            <method name="queryParam" signature="string $name" line-rate="1" branch-rate="0" complexity="2">
+              <lines>
+                <line number="52" hits="2"/>
+                <line number="54" hits="2"/>
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="18" hits="5"/>
+            <line number="26" hits="5"/>
+            <line number="27" hits="5"/>
+            <line number="28" hits="5"/>
+            <line number="30" hits="5"/>
+            <line number="31" hits="5"/>
+            <line number="32" hits="3"/>
+            <line number="33" hits="1"/>
+            <line number="37" hits="5"/>
+            <line number="38" hits="5"/>
+            <line number="39" hits="5"/>
+            <line number="40" hits="5"/>
+            <line number="41" hits="5"/>
+            <line number="42" hits="5"/>
+            <line number="47" hits="2"/>
+            <line number="52" hits="2"/>
+            <line number="54" hits="2"/>
+          </lines>
+        </class>
+      </classes>
+    </package>
+    <package name="Http/Response.php" line-rate="1" branch-rate="0" complexity="3">
+      <classes>
+        <class name="App\Http\Response" filename="Http/Response.php" line-rate="1" branch-rate="0" complexity="3">
+          <methods>
+            <method name="__construct" signature="int $status, string $body, array $headers" line-rate="1" branch-rate="0" complexity="1">
+              <lines>
+                <line number="18" hits="5"/>
+              </lines>
+            </method>
+            <method name="text" signature="string $body, int $status" line-rate="1" branch-rate="0" complexity="1">
+              <lines>
+                <line number="22" hits="2"/>
+              </lines>
+            </method>
+            <method name="json" signature="array $data, int $status" line-rate="1" branch-rate="0" complexity="1">
+              <lines>
+                <line number="32" hits="2"/>
+                <line number="33" hits="2"/>
+                <line number="34" hits="2"/>
+                <line number="35" hits="2"/>
+                <line number="36" hits="2"/>
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="18" hits="5"/>
+            <line number="22" hits="2"/>
+            <line number="32" hits="2"/>
+            <line number="33" hits="2"/>
+            <line number="34" hits="2"/>
+            <line number="35" hits="2"/>
+            <line number="36" hits="2"/>
+          </lines>
+        </class>
+      </classes>
+    </package>
+    <package name="Kernel.php" line-rate="1" branch-rate="0" complexity="13">
+      <classes>
+        <class name="App\Kernel" filename="Kernel.php" line-rate="1" branch-rate="0" complexity="13">
+          <methods>
+            <method name="__construct" signature="ReleaseInfo $release, Closure $tokenProvider" line-rate="1" branch-rate="0" complexity="1">
+              <lines>
+                <line number="26" hits="14"/>
+              </lines>
+            </method>
+            <method name="handle" signature="Request $request" line-rate="1" branch-rate="0" complexity="7">
+              <lines>
+                <line number="31" hits="14"/>
+                <line number="32" hits="2"/>
+                <line number="33" hits="2"/>
+                <line number="34" hits="2"/>
+                <line number="35" hits="2"/>
+                <line number="36" hits="2"/>
+                <line number="37" hits="2"/>
+                <line number="38" hits="4"/>
+                <line number="39" hits="6"/>
+                <line number="40" hits="2"/>
+                <line number="43" hits="14"/>
+                <line number="44" hits="2"/>
+                <line number="47" hits="12"/>
+                <line number="48" hits="3"/>
+                <line number="51" hits="9"/>
+              </lines>
+            </method>
+            <method name="nextVersion" signature="Request $request" line-rate="1" branch-rate="0" complexity="5">
+              <lines>
+                <line number="56" hits="5"/>
+                <line number="57" hits="5"/>
+                <line number="59" hits="5"/>
+                <line number="60" hits="2"/>
+                <line number="61" hits="2"/>
+                <line number="62" hits="2"/>
+                <line number="63" hits="2"/>
+                <line number="67" hits="3"/>
+                <line number="68" hits="2"/>
+                <line number="69" hits="2"/>
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="26" hits="14"/>
+            <line number="31" hits="14"/>
+            <line number="32" hits="2"/>
+            <line number="33" hits="2"/>
+            <line number="34" hits="2"/>
+            <line number="35" hits="2"/>
+            <line number="36" hits="2"/>
+            <line number="37" hits="2"/>
+            <line number="38" hits="4"/>
+            <line number="39" hits="6"/>
+            <line number="40" hits="2"/>
+            <line number="43" hits="14"/>
+            <line number="44" hits="2"/>
+            <line number="47" hits="12"/>
+            <line number="48" hits="3"/>
+            <line number="51" hits="9"/>
+            <line number="56" hits="5"/>
+            <line number="57" hits="5"/>
+            <line number="59" hits="5"/>
+            <line number="60" hits="2"/>
+            <line number="61" hits="2"/>
+            <line number="62" hits="2"/>
+            <line number="63" hits="2"/>
+            <line number="67" hits="3"/>
+            <line number="68" hits="2"/>
+            <line number="69" hits="2"/>
+          </lines>
+        </class>
+      </classes>
+    </package>
+    <package name="ReleaseInfo.php" line-rate="1" branch-rate="0" complexity="9">
+      <classes>
+        <class name="App\ReleaseInfo" filename="ReleaseInfo.php" line-rate="1" branch-rate="0" complexity="9">
+          <methods>
+            <method name="__construct" signature="string $version, string $build, string $slot" line-rate="1" branch-rate="0" complexity="1">
+              <lines>
+                <line number="18" hits="7"/>
+              </lines>
+            </method>
+            <method name="fromReleaseRoot" signature="string $root, string $slot" line-rate="1" branch-rate="0" complexity="8">
+              <lines>
+                <line number="25" hits="7"/>
+                <line number="26" hits="7"/>
+                <line number="27" hits="1"/>
+                <line number="31" hits="6"/>
+                <line number="32" hits="1"/>
+                <line number="33" hits="1"/>
+                <line number="36" hits="5"/>
+                <line number="37" hits="5"/>
+                <line number="38" hits="5"/>
+                <line number="39" hits="4"/>
+                <line number="42" hits="1"/>
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="18" hits="7"/>
+            <line number="25" hits="7"/>
+            <line number="26" hits="7"/>
+            <line number="27" hits="1"/>
+            <line number="31" hits="6"/>
+            <line number="32" hits="1"/>
+            <line number="33" hits="1"/>
+            <line number="36" hits="5"/>
+            <line number="37" hits="5"/>
+            <line number="38" hits="5"/>
+            <line number="39" hits="4"/>
+            <line number="42" hits="1"/>
+          </lines>
+        </class>
+      </classes>
+    </package>
+    <package name="SemverBump.php" line-rate="1" branch-rate="0" complexity="6">
+      <classes>
+        <class name="App\SemverBump" filename="SemverBump.php" line-rate="1" branch-rate="0" complexity="6">
+          <methods>
+            <method name="bump" signature="string $current, string $bump" line-rate="1" branch-rate="0" complexity="6">
+              <lines>
+                <line number="19" hits="18"/>
+                <line number="20" hits="11"/>
+                <line number="23" hits="7"/>
+                <line number="25" hits="7"/>
+                <line number="26" hits="1"/>
+                <line number="27" hits="2"/>
+                <line number="28" hits="3"/>
+                <line number="29" hits="7"/>
+                <line number="30" hits="7"/>
+                <line number="31" hits="7"/>
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="19" hits="18"/>
+            <line number="20" hits="11"/>
+            <line number="23" hits="7"/>
+            <line number="25" hits="7"/>
+            <line number="26" hits="1"/>
+            <line number="27" hits="2"/>
+            <line number="28" hits="3"/>
+            <line number="29" hits="7"/>
+            <line number="30" hits="7"/>
+            <line number="31" hits="7"/>
+          </lines>
+        </class>
+      </classes>
+    </package>
+    <package name="TokenFile.php" line-rate="1" branch-rate="0" complexity="5">
+      <classes>
+        <class name="App\TokenFile" filename="TokenFile.php" line-rate="1" branch-rate="0" complexity="5">
+          <methods>
+            <method name="read" signature="?string $path" line-rate="1" branch-rate="0" complexity="5">
+              <lines>
+                <line number="14" hits="4"/>
+                <line number="15" hits="1"/>
+                <line number="18" hits="3"/>
+                <line number="19" hits="3"/>
+                <line number="20" hits="1"/>
+                <line number="23" hits="2"/>
+                <line number="25" hits="2"/>
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="14" hits="4"/>
+            <line number="15" hits="1"/>
+            <line number="18" hits="3"/>
+            <line number="19" hits="3"/>
+            <line number="20" hits="1"/>
+            <line number="23" hits="2"/>
+            <line number="25" hits="2"/>
+          </lines>
+        </class>
+      </classes>
+    </package>
+  </packages>
+</coverage>

@@ -1,0 +1,19 @@
+{
+  "totals": {"errors": 1, "file_errors": 3},
+  "files": {
+    "/workspace/app/src/Kernel.php": {
+      "errors": 2,
+      "messages": [
+        {"message": "Method App\\Kernel::handle() has no return type specified.", "line": 31, "ignorable": true, "identifier": "missingType.return"},
+        {"message": "Parameter #1 $request of method App\\Kernel::handle() expects App\\Http\\Request, mixed given.", "line": 33, "ignorable": true, "identifier": "argument.type"}
+      ]
+    },
+    "/workspace/app/src/SemverBump.php": {
+      "errors": 1,
+      "messages": [
+        {"message": "Cannot access offset 1 on mixed.", "line": 18, "ignorable": true, "identifier": "offsetAccess.nonOffsetAccessible"}
+      ]
+    }
+  },
+  "errors": ["Ignored error pattern was not matched in configuration."]
+}

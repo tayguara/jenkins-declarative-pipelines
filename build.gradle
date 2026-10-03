@@ -1,0 +1,66 @@
+// Builds and tests the ci-common shared library and the Jenkinsfile.
+// The Gradle project lives at the repo root so the JenkinsfileTest can find
+// ./Jenkinsfile; the source sets point into shared-library/.
+plugins {
+    id 'groovy'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+    // JenkinsPipelineUnit stopped publishing to Maven Central at 1.1. These groups come from the
+    // Jenkins repository only, so Maven Central is never asked for them (no dependency confusion).
+    exclusiveContent {
+        forRepository {
+            maven { url = 'https://repo.jenkins-ci.org/releases/' }
+        }
+        filter {
+            includeGroup 'com.lesfurets'
+            includeGroupByRegex 'com\\.cloudbees.*'
+            includeGroupByRegex 'org\\.jenkins-ci.*'
+            includeGroupByRegex 'io\\.jenkins.*'
+        }
+    }
+}
+
+sourceSets {
+    main {
+        groovy { srcDirs = ['shared-library/src'] }
+        java { srcDirs = [] }
+    }
+    test {
+        groovy { srcDirs = ['shared-library/test/groovy'] }
+        java { srcDirs = [] }
+        resources { srcDirs = ['shared-library/test/resources'] }
+    }
+}
+
+dependencies {
+    // Same Groovy as Jenkins core. JenkinsPipelineUnit does not support Groovy 4.
+    implementation 'org.codehaus.groovy:groovy-all:2.4.21'
+    // Provides @NonCPS at compile time; Jenkins supplies it at runtime.
+    compileOnly 'com.cloudbees:groovy-cps:4348.ve8c60d51e508'
+
+    testImplementation 'com.lesfurets:jenkins-pipeline-unit:1.31'
+    testImplementation platform('org.junit:junit-bom:6.1.3')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+    // The steps and the Jenkinsfile are loaded by the tests at runtime, outside any source set:
+    // declare them so that editing one re-runs the tests.
+    inputs.dir('shared-library/vars').withPropertyName('libraryVars').withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.files('Jenkinsfile').withPropertyName('jenkinsfile')
+    inputs.dir('config').withPropertyName('environmentConfig').withPathSensitivity(PathSensitivity.RELATIVE)
+    testLogging {
+        events 'failed'
+        exceptionFormat = 'full'
+    }
+}

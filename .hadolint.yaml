@@ -1,0 +1,6 @@
+# DL3008 / DL3018: pinning apt/apk package versions breaks the build as soon as the
+# distribution ships a security patch for the pinned version. The base images are
+# already pinned by tag.
+ignored:
+  - DL3008
+  - DL3018

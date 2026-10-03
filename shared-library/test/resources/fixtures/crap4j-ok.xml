@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<crap_result>
+  <project/>
+  <timestamp>2026-10-02 20:37:45</timestamp>
+  <stats>
+    <name>Method Crap Stats</name>
+    <methodCount>3</methodCount>
+    <crapMethodCount>0</crapMethodCount>
+  </stats>
+  <methods>
+    <method>
+      <package>App</package>
+      <className>App\Kernel</className>
+      <methodName>handle</methodName>
+      <methodSignature>handle()</methodSignature>
+      <fullMethod>handle()</fullMethod>
+      <crap>6</crap>
+      <complexity>6</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+    <method>
+      <package>App</package>
+      <className>App\SemverBump</className>
+      <methodName>bump</methodName>
+      <methodSignature>bump()</methodSignature>
+      <fullMethod>bump()</fullMethod>
+      <crap>30</crap>
+      <complexity>7</complexity>
+      <coverage>80</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+    <method>
+      <package>App</package>
+      <className>App\SemverBump</className>
+      <methodName>parse</methodName>
+      <methodSignature>parse()</methodSignature>
+      <fullMethod>parse()</fullMethod>
+      <crap>2.5</crap>
+      <complexity>2</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+  </methods>
+</crap_result>

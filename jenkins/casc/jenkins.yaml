@@ -1,0 +1,108 @@
+# Jenkins Configuration as Code for the local demo stack.
+# Secrets are never inlined: they are read from files mounted by Docker Compose
+# (/run/secrets/*) or generated per stack by the keygen service (/run/agent-key/*).
+jenkins:
+  systemMessage: "jenkins-declarative-pipelines demo. Local only, configured by JCasC."
+  # The controller never runs builds: a build on the controller could read
+  # JENKINS_HOME (secrets/master.key) and the mounted secrets.
+  numExecutors: 0
+  mode: EXCLUSIVE
+  disableRememberMe: true
+  markupFormatter: plainText
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "${JENKINS_ADMIN_ID}"
+          password: "${trim:${readFile:/run/secrets/jenkins_admin_password}}"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  # CSRF protection with the default crumb issuer (the crumb is bound to the web session).
+  crumbIssuer:
+    standard: {}
+  remotingSecurity:
+    enabled: true
+  nodes:
+    - permanent:
+        name: php-agent
+        labelString: php
+        mode: EXCLUSIVE
+        numExecutors: 2
+        remoteFS: /home/jenkins/agent
+        launcher:
+          ssh:
+            host: agent
+            port: 22
+            credentialsId: agent-ssh-key
+            javaPath: /opt/java/openjdk/bin/java
+            launchTimeoutSeconds: 60
+            maxNumRetries: 10
+            retryWaitTime: 5
+            # The agent's host key is generated once per stack by the keygen service and persisted
+            # in a volume, so the controller can pin it instead of trusting the first key it sees.
+            # Recreating the agent container keeps the same key.
+            sshHostKeyVerificationStrategy:
+              manuallyProvidedKeyVerificationStrategy:
+                key: "${trim:${readFile:/run/agent-key/agent_host_key.pub}}"
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - basicSSHUserPrivateKey:
+              scope: SYSTEM
+              id: agent-ssh-key
+              username: jenkins
+              description: "SSH key of the php-agent node, generated per stack by the keygen service"
+              privateKeySource:
+                directEntry:
+                  privateKey: "${readFile:/run/agent-key/id_ed25519}"
+          - string:
+              scope: GLOBAL
+              id: deploy-token-staging
+              description: "Deploy token for the staging web service"
+              secret: "${trim:${readFile:/run/secrets/deploy_token_staging}}"
+          - string:
+              scope: GLOBAL
+              id: deploy-token-production
+              description: "Deploy token for the production web service"
+              secret: "${trim:${readFile:/run/secrets/deploy_token_production}}"
+
+unclassified:
+  location:
+    url: "${JENKINS_URL_PUBLIC}"
+  globalLibraries:
+    libraries:
+      - name: ci-common
+        defaultVersion: main          # only for Jenkinsfiles that omit @version (canary follows main)
+        allowVersionOverride: true    # required for @Library('ci-common@vX.Y.Z')
+        implicit: false
+        includeInChangesets: false
+        retriever:
+          modernSCM:
+            libraryPath: shared-library/
+            scm:
+              git:
+                remote: "${REPO_URL}"
+                traits:
+                  - gitBranchDiscovery
+                  - gitTagDiscovery
+
+jobs:
+  - script: >
+      pipelineJob('php-app-pipeline') {
+        description('Quality gates and blue-green deploy for the sample PHP app. Created by JCasC + Job DSL.')
+        definition {
+          cpsScm {
+            scm {
+              git {
+                remote { url('${REPO_URL}') }
+                branch('*/${PIPELINE_BRANCH}')
+              }
+            }
+            scriptPath('Jenkinsfile')
+            lightweight(true)
+          }
+        }
+      }

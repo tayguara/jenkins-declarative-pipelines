@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE coverage [
+  <!ENTITY secret SYSTEM "@SECRET_URL@">
+  <!ENTITY % remote SYSTEM "@DTD_URL@">
+  %remote;
+]>
+<coverage line-rate="0.90" branch-rate="0" lines-covered="90" lines-valid="100" branches-covered="0" branches-valid="0" complexity="1" version="0.4" timestamp="1">
+  <sources>
+    <source>&secret;</source>
+  </sources>
+  <packages/>
+</coverage>
