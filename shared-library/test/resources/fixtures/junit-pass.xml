@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="unit" tests="5" assertions="9" errors="0" failures="0" skipped="1" time="0.12">
+    <testcase name="testOne" class="App\Tests\ATest" classname="App.Tests.ATest" time="0.01"/>
+    <testcase name="testTwo" class="App\Tests\ATest" classname="App.Tests.ATest" time="0.01"/>
+    <testcase name="testThree" class="App\Tests\ATest" classname="App.Tests.ATest" time="0.01"/>
+    <testcase name="testFour" class="App\Tests\BTest" classname="App.Tests.BTest" time="0.01"/>
+    <testcase name="testFive" class="App\Tests\BTest" classname="App.Tests.BTest" time="0.01"><skipped/></testcase>
+  </testsuite>
+</testsuites>

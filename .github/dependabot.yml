@@ -1,0 +1,60 @@
+version: 2
+updates:
+  - package-ecosystem: gradle
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      gradle-dependencies:
+        patterns: ['*']
+    ignore:
+      # Must follow the Groovy that ships inside Jenkins core (2.4), and
+      # JenkinsPipelineUnit does not support Groovy 4.
+      - dependency-name: org.codehaus.groovy:groovy-all
+        update-types: ['version-update:semver-minor', 'version-update:semver-major']
+
+  - package-ecosystem: composer
+    directory: /app
+    schedule:
+      interval: weekly
+    groups:
+      composer-dependencies:
+        patterns: ['*']
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      npm-dependencies:
+        patterns: ['*']
+
+  # The three Dockerfiles. Dependabot keeps the tag suffix, so jenkins/jenkins stays on
+  # "-lts-jdk21" and should not propose weekly releases; check the first PRs after publishing.
+  # Jenkins plugins in plugins.txt are not covered by Dependabot: bump them monthly by hand (see README).
+  - package-ecosystem: docker
+    directories:
+      - /jenkins/controller
+      - /jenkins/agent
+      - /jenkins/git-server
+    schedule:
+      interval: weekly
+    groups:
+      docker-images:
+        patterns: ['*']
+
+  - package-ecosystem: docker-compose
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      compose-images:
+        patterns: ['*']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns: ['*']

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="unit" tests="3" assertions="3" errors="0" failures="0" skipped="0" time="0.1"/>
+  <testsuite name="integration" tests="4" assertions="4" errors="0" failures="1" skipped="1" time="0.2"/>
+</testsuites>

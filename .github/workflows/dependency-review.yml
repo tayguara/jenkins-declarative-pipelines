@@ -1,0 +1,30 @@
+name: Dependency review
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dependency-review:
+    name: Dependency review
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      # Blocks PRs that add dependencies with known vulnerabilities (moderate or worse).
+      # Reads the composer, npm and GitHub Actions manifests. No PR comment, so the token
+      # needs no write access.
+      - uses: actions/dependency-review-action@v5.0.0
+        with:
+          fail-on-severity: moderate
+          comment-summary-in-pr: never

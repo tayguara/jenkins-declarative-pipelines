@@ -1,0 +1,242 @@
+# Local Jenkins stack for jenkins-declarative-pipelines.
+#
+# Security posture: no Docker socket mounts, no privileged mode, host ports bound to
+# 127.0.0.1 only, secrets delivered as files under /run/secrets (never as env vars).
+name: jenkins-declarative-pipelines
+
+x-hardening: &hardening
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+
+services:
+  # Read-only git daemon that serves the local mirror created by scripts/sync-git-mirror.sh.
+  # The git plugin blocks file:// checkouts (SECURITY-2478), so Jenkins pulls over git://.
+  # Enabled by the "local-git" profile; `make up` turns it on when REPO_URL is git://git-server/...
+  git-server:
+    profiles: [local-git]
+    build:
+      context: ./jenkins/git-server
+      provenance: false
+      sbom: false
+    image: jenkins-declarative-pipelines-git-server:local
+    command:
+      - -c
+      - safe.directory=*
+      - daemon
+      - --reuseaddr
+      - --export-all
+      - --base-path=/srv/git
+      - --verbose
+      - /srv/git
+    user: "65534:65534"
+    read_only: true
+    <<: *hardening
+    expose: ["9418"]
+    volumes:
+      - ./.demo/git:/srv/git:ro
+    healthcheck:
+      test: ["CMD", "git", "ls-remote", "git://127.0.0.1/jenkins-declarative-pipelines.git", "HEAD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [ci]
+
+  # One-shot: generates this stack's SSH keys, only when they are missing, so running it again
+  # (every `make up` does) changes nothing. Nothing is committed and nothing comes from .env.
+  # Where each file goes, so that no side receives more than it needs:
+  #   agent-key-private  -> controller only: the client PRIVATE key id_ed25519 and the agent's
+  #                         PUBLIC host key agent_host_key.pub (JCasC pins it)
+  #   agent-key-public   -> agent only: the client PUBLIC key id_ed25519.pub (authorized key)
+  #   agent-host-key     -> agent only: the agent's host PRIVATE key, owned by root, mode 0400,
+  #                         in a directory of mode 0700. Build code runs as uid 1000 in the agent
+  #                         and cannot read it, and the controller never mounts it.
+  # Persisting the host key lets the controller pin it, and lets the agent container be
+  # recreated without breaking that trust. Root is needed to create the root-owned file and to
+  # chown the others to uid 1000; the capabilities are limited to that.
+  keygen:
+    build: &agent-build
+      context: ./jenkins/agent
+      provenance: false
+      sbom: false
+    image: jenkins-declarative-pipelines-agent:local
+    user: "0:0"
+    restart: "no"
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [CHOWN, DAC_OVERRIDE, FOWNER]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs: ["/tmp"]
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        set -eu
+        umask 077
+        if [ ! -s /keys/private/id_ed25519 ]; then
+          rm -f /keys/private/id_ed25519
+          ssh-keygen -q -t ed25519 -N "" -C "jenkins-agent@local-stack" -f /keys/private/id_ed25519
+        fi
+        if [ ! -s /keys/host/ssh_host_ed25519_key ]; then
+          rm -f /keys/host/ssh_host_ed25519_key
+          ssh-keygen -q -t ed25519 -N "" -C "agent-host@local-stack" -f /keys/host/ssh_host_ed25519_key
+        fi
+        rm -f /keys/public/id_ed25519.pub /keys/private/agent_host_key.pub /keys/private/id_ed25519.pub \
+          /keys/host/ssh_host_ed25519_key.pub /keys/public/ssh_host_ed25519_key
+        ssh-keygen -y -f /keys/private/id_ed25519 > /keys/public/id_ed25519.pub
+        ssh-keygen -y -f /keys/host/ssh_host_ed25519_key | cut -d' ' -f1,2 > /keys/private/agent_host_key.pub
+        chown 1000:1000 /keys/private/id_ed25519 /keys/private/agent_host_key.pub /keys/public/id_ed25519.pub
+        chown root:root /keys/host /keys/host/ssh_host_ed25519_key
+        chmod 0400 /keys/private/id_ed25519 /keys/host/ssh_host_ed25519_key
+        chmod 0444 /keys/public/id_ed25519.pub /keys/private/agent_host_key.pub
+        chmod 0700 /keys/host
+        echo "agent keys ready"
+    volumes:
+      - agent-key-private:/keys/private
+      - agent-key-public:/keys/public
+      - agent-host-key:/keys/host
+    networks: [ci]
+
+  # Build agent: PHP 8.4 + Composer, reached over SSH. Builds run here, never on the controller.
+  # sshd must start as root, so this container keeps the default user and a small set of
+  # capabilities instead of "cap_drop: [ALL]" alone.
+  # The public key is mounted under /keys, not /run: mounting a volume below /run of this
+  # Debian-based image was observed to fail intermittently (mount point missing).
+  agent:
+    build: *agent-build
+    image: jenkins-declarative-pipelines-agent:local
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        set -eu
+        exec setup-sshd "$$(cat /keys/public/id_ed25519.pub)" -o HostKey=/keys/host/ssh_host_ed25519_key
+    cap_drop: [ALL]
+    cap_add: [CHOWN, DAC_OVERRIDE, FOWNER, SETUID, SETGID, SYS_CHROOT, KILL, AUDIT_WRITE]
+    security_opt: ["no-new-privileges:true"]
+    expose: ["22"]
+    volumes:
+      - agent-key-public:/keys/public:ro
+      - agent-host-key:/keys/host:ro
+      - deploy-data:/srv/deploy
+    depends_on:
+      keygen:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/22"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [ci]
+
+  # Controller: JCasC, pinned plugins, zero executors.
+  jenkins:
+    build:
+      context: ./jenkins/controller
+      provenance: false
+      sbom: false
+    image: jenkins-declarative-pipelines-controller:local
+    ports:
+      - "127.0.0.1:${JENKINS_HTTP_PORT:-8080}:8080"
+    environment:
+      JENKINS_ADMIN_ID: ${JENKINS_ADMIN_ID:?set it in .env}
+      REPO_URL: ${REPO_URL:-git://git-server/jenkins-declarative-pipelines.git}
+      PIPELINE_BRANCH: ${PIPELINE_BRANCH:-demo}
+      JENKINS_URL_PUBLIC: http://localhost:${JENKINS_HTTP_PORT:-8080}/
+    secrets:
+      - jenkins_admin_password
+      - deploy_token_staging
+      - deploy_token_production
+    volumes:
+      - jenkins-home:/var/jenkins_home
+      - ./jenkins/casc:/var/jenkins_conf:ro
+      - agent-key-private:/run/agent-key:ro
+    read_only: true
+    <<: *hardening
+    tmpfs: ["/tmp"]
+    depends_on:
+      keygen:
+        condition: service_completed_successfully
+      agent:
+        condition: service_healthy
+      git-server:
+        condition: service_healthy
+        required: false
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/login"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+    networks: [ci]
+
+  # "Load balancer" for the staging environment: serves /srv/deploy/staging/current.
+  web-staging:
+    image: php:8.4.26-cli-alpine3.24
+    command: ["php", "-d", "realpath_cache_size=0", "-d", "display_errors=0", "-d", "expose_php=0", "-S", "0.0.0.0:8000", "/srv/router/router.php"]
+    user: "1000:1000"
+    read_only: true
+    <<: *hardening
+    tmpfs: ["/tmp"]
+    environment:
+      APP_ENV: staging
+      DEPLOY_TOKEN_FILE: /run/secrets/deploy_token_staging
+    secrets:
+      - deploy_token_staging
+    ports:
+      - "127.0.0.1:${WEB_STAGING_PORT:-8081}:8000"
+    volumes:
+      - deploy-data:/srv/deploy:ro
+      - ./deploy/web/router.php:/srv/router/router.php:ro
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@fsockopen('127.0.0.1', 8000) ? 0 : 1);"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [ci]
+
+  web-production:
+    image: php:8.4.26-cli-alpine3.24
+    command: ["php", "-d", "realpath_cache_size=0", "-d", "display_errors=0", "-d", "expose_php=0", "-S", "0.0.0.0:8000", "/srv/router/router.php"]
+    user: "1000:1000"
+    read_only: true
+    <<: *hardening
+    tmpfs: ["/tmp"]
+    environment:
+      APP_ENV: production
+      DEPLOY_TOKEN_FILE: /run/secrets/deploy_token_production
+    secrets:
+      - deploy_token_production
+    ports:
+      - "127.0.0.1:${WEB_PRODUCTION_PORT:-8082}:8000"
+    volumes:
+      - deploy-data:/srv/deploy:ro
+      - ./deploy/web/router.php:/srv/router/router.php:ro
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@fsockopen('127.0.0.1', 8000) ? 0 : 1);"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [ci]
+
+# The values live in .env and are written to .demo/secrets/* (dir 0700, git-ignored) by
+# scripts/check-env.sh, which `make up` runs first. Compose mounts them as files under
+# /run/secrets/<name>, so they never appear in the container environment (`docker inspect`).
+# Compose's `environment:` secret source is not used: it cannot be combined with
+# `read_only: true` services ("`file` is the sole supported option").
+secrets:
+  jenkins_admin_password:
+    file: ./.demo/secrets/jenkins_admin_password
+  deploy_token_staging:
+    file: ./.demo/secrets/deploy_token_staging
+  deploy_token_production:
+    file: ./.demo/secrets/deploy_token_production
+
+volumes:
+  jenkins-home:
+  deploy-data:
+  agent-key-private:
+  agent-key-public:
+  agent-host-key:
+
+networks:
+  ci:

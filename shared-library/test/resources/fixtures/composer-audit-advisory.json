@@ -1,0 +1,12 @@
+{
+  "advisories": {
+    "vendor/lib-a": [
+      {"advisoryId": "PKSA-aaaa-bbbb-cccc", "packageName": "vendor/lib-a", "affectedVersions": "<1.2.3", "title": "Remote code execution", "cve": "CVE-2026-0001", "severity": "high"},
+      {"advisoryId": "PKSA-dddd-eeee-ffff", "packageName": "vendor/lib-a", "affectedVersions": "<1.2.0", "title": "Path traversal", "cve": null}
+    ],
+    "vendor/lib-b": [
+      {"advisoryId": "PKSA-1111-2222-3333", "packageName": "vendor/lib-b", "affectedVersions": "<2.0.0", "title": "Open redirect", "cve": "CVE-2026-0002"}
+    ]
+  },
+  "abandoned": {"vendor/old": null}
+}

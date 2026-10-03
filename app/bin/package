@@ -1,0 +1,40 @@
+#!/bin/sh
+# Builds a self-contained release directory: public/, src/, a no-dev vendor/ and a RELEASE file.
+# Usage: bin/package <outdir>
+# GIT_COMMIT and BUILD_NUMBER (set by Jenkins) end up in RELEASE; they default to "local" and "0".
+set -eu
+
+if [ "$#" -ne 1 ] || [ -z "$1" ]; then
+    echo "usage: $0 <outdir>" >&2
+    exit 2
+fi
+
+app_dir=$(cd "$(dirname "$0")/.." && pwd)
+mkdir -p "$1"
+out=$(cd "$1" && pwd)
+
+case "$out" in
+    / | "$app_dir" | "$app_dir"/*)
+        echo "refusing to use $out as the output directory" >&2
+        exit 2
+        ;;
+esac
+case "$app_dir/" in
+    "$out"/*)
+        echo "refusing to use $out as the output directory: it contains the app" >&2
+        exit 2
+        ;;
+esac
+
+# Start from an empty directory, including dotfiles.
+find "$out/." ! -name . -prune -exec rm -rf {} +
+
+cp -R "$app_dir/public" "$app_dir/src" "$app_dir/composer.json" "$app_dir/composer.lock" "$out/"
+
+composer install --no-dev --classmap-authoritative --no-interaction --no-progress --working-dir "$out"
+
+commit=${GIT_COMMIT:-local}
+version=$(printf '%.7s' "$commit")
+printf '{"version":"%s","build":"%s"}\n' "$version" "${BUILD_NUMBER:-0}" > "$out/RELEASE"
+
+echo "Packaged release $version (build ${BUILD_NUMBER:-0}) in $out"

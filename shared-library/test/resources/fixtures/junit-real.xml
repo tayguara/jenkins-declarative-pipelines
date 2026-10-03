@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="/workspace/app/phpunit.xml.dist" tests="62" assertions="122" errors="0" failures="0" skipped="0" time="0.341583">
+    <testsuite name="unit" tests="62" assertions="122" errors="0" failures="0" skipped="0" time="0.341583">
+      <testsuite name="App\Tests\HealthCheckTest" file="/workspace/app/tests/HealthCheckTest.php" tests="9" assertions="18" errors="0" failures="0" skipped="0" time="0.101186">
+        <testcase name="testReportsReleaseWhenTokenMatches" file="/workspace/app/tests/HealthCheckTest.php" line="29" class="App\Tests\HealthCheckTest" classname="App.Tests.HealthCheckTest" assertions="3" time="0.037317"/>
+        <testcase name="testRejectsWrongToken" file="/workspace/app/tests/HealthCheckTest.php" line="38" class="App\Tests\HealthCheckTest" classname="App.Tests.HealthCheckTest" assertions="2" time="0.006594"/>
+        <testcase name="testRejectsMissingToken" file="/workspace/app/tests/HealthCheckTest.php" line="46" class="App\Tests\HealthCheckTest" classname="App.Tests.HealthCheckTest" assertions="2" time="0.006567"/>
+        <testsuite name="App\Tests\HealthCheckTest::testDeniesWhenNoTokenIsConfigured" tests="5" assertions="10" errors="0" failures="0" skipped="0" time="0.039325">
+          <testcase name="testDeniesWhenNoTokenIsConfigured with data set &quot;nothing configured, nothing sent&quot;" file="/workspace/app/tests/HealthCheckTest.php" line="67" class="App\Tests\HealthCheckTest" classname="App.Tests.HealthCheckTest" assertions="2" time="0.006972"/>
+          <testcase name="testDeniesWhenNoTokenIsConfigured with data set &quot;nothing configured, empty sent&quot;" file="/workspace/app/tests/HealthCheckTest.php" line="67" class="App\Tests\HealthCheckTest" classname="App.Tests.HealthCheckTest" assertions="2" time="0.006906"/>
+          <testcase name="testDeniesWhenNoTokenIsConfigured with data set &quot;empty configured, empty sent&quot;" file="/workspace/app/tests/HealthCheckTest.php" line="67" class="App\Tests\HealthCheckTest" classname="App.Tests.HealthCheckTest" assertions="2" time="0.006241"/>
+          <testcase name="testDeniesWhenNoTokenIsConfigured with data set &quot;empty configured, token sent&quot;" file="/workspace/app/tests/HealthCheckTest.php" line="67" class="App\Tests\HealthCheckTest" classname="App.Tests.HealthCheckTest" assertions="2" time="0.011882"/>
+          <testcase name="testDeniesWhenNoTokenIsConfigured with data set &quot;nothing configured, token sent&quot;" file="/workspace/app/tests/HealthCheckTest.php" line="67" class="App\Tests\HealthCheckTest" classname="App.Tests.HealthCheckTest" assertions="2" time="0.007323"/>
+        </testsuite>
+        <testcase name="testDoesNotCallTheTokenProviderTwice" file="/workspace/app/tests/HealthCheckTest.php" line="75" class="App\Tests\HealthCheckTest" classname="App.Tests.HealthCheckTest" assertions="1" time="0.011384"/>
+      </testsuite>
+      <testsuite name="App\Tests\KernelTest" file="/workspace/app/tests/KernelTest.php" tests="14" assertions="32" errors="0" failures="0" skipped="0" time="0.076299">
+        <testcase name="testRootDescribesTheRelease" file="/workspace/app/tests/KernelTest.php" line="32" class="App\Tests\KernelTest" classname="App.Tests.KernelTest" assertions="3" time="0.008085"/>
+        <testcase name="testHealthIsServedWithAValidToken" file="/workspace/app/tests/KernelTest.php" line="41" class="App\Tests\KernelTest" classname="App.Tests.KernelTest" assertions="2" time="0.006826"/>
+        <testcase name="testHealthIsDeniedWithoutAToken" file="/workspace/app/tests/KernelTest.php" line="49" class="App\Tests\KernelTest" classname="App.Tests.KernelTest" assertions="2" time="0.006530"/>
+        <testcase name="testHealthIsDeniedWhenNoTokenIsConfigured" file="/workspace/app/tests/KernelTest.php" line="57" class="App\Tests\KernelTest" classname="App.Tests.KernelTest" assertions="1" time="0.003930"/>
+        <testcase name="testNextVersionBumpsTheRequestedPart" file="/workspace/app/tests/KernelTest.php" line="64" class="App\Tests\KernelTest" classname="App.Tests.KernelTest" assertions="3" time="0.005603"/>
+        <testsuite name="App\Tests\KernelTest::testNextVersionRejectsBadInput" tests="4" assertions="12" errors="0" failures="0" skipped="0" time="0.021924">
+          <testcase name="testNextVersionRejectsBadInput with data set &quot;no parameters&quot;" file="/workspace/app/tests/KernelTest.php" line="88" class="App\Tests\KernelTest" classname="App.Tests.KernelTest" assertions="3" time="0.006325"/>
+          <testcase name="testNextVersionRejectsBadInput with data set &quot;missing bump&quot;" file="/workspace/app/tests/KernelTest.php" line="88" class="App\Tests\KernelTest" classname="App.Tests.KernelTest" assertions="3" time="0.005039"/>
+          <testcase name="testNextVersionRejectsBadInput with data set &quot;invalid version&quot;" file="/workspace/app/tests/KernelTest.php" line="88" class="App\Tests\KernelTest" classname="App.Tests.KernelTest" assertions="3" time="0.006257"/>
+          <testcase name="testNextVersionRejectsBadInput with data set &quot;invalid bump&quot;" file="/workspace/app/tests/KernelTest.php" line="88" class="App\Tests\KernelTest" classname="App.Tests.KernelTest" assertions="3" time="0.004302"/>
+        </testsuite>
+        <testcase name="testUnknownPathIsNotFound" file="/workspace/app/tests/KernelTest.php" line="97" class="App\Tests\KernelTest" classname="App.Tests.KernelTest" assertions="2" time="0.005181"/>
+        <testsuite name="App\Tests\KernelTest::testOnlyGetIsAllowed" tests="3" assertions="6" errors="0" failures="0" skipped="0" time="0.013793">
+          <testcase name="testOnlyGetIsAllowed with data set &quot;root&quot;" file="/workspace/app/tests/KernelTest.php" line="116" class="App\Tests\KernelTest" classname="App.Tests.KernelTest" assertions="2" time="0.004695"/>
+          <testcase name="testOnlyGetIsAllowed with data set &quot;health&quot;" file="/workspace/app/tests/KernelTest.php" line="116" class="App\Tests\KernelTest" classname="App.Tests.KernelTest" assertions="2" time="0.004043"/>
+          <testcase name="testOnlyGetIsAllowed with data set &quot;next version&quot;" file="/workspace/app/tests/KernelTest.php" line="116" class="App\Tests\KernelTest" classname="App.Tests.KernelTest" assertions="2" time="0.005054"/>
+        </testsuite>
+        <testcase name="testUnknownPathWinsOverMethodCheck" file="/workspace/app/tests/KernelTest.php" line="124" class="App\Tests\KernelTest" classname="App.Tests.KernelTest" assertions="1" time="0.004427"/>
+      </testsuite>
+      <testsuite name="App\Tests\ReleaseInfoTest" file="/workspace/app/tests/ReleaseInfoTest.php" tests="7" assertions="16" errors="0" failures="0" skipped="0" time="0.040028">
+        <testcase name="testReadsVersionAndBuildFromReleaseFile" file="/workspace/app/tests/ReleaseInfoTest.php" line="29" class="App\Tests\ReleaseInfoTest" classname="App.Tests.ReleaseInfoTest" assertions="3" time="0.005967"/>
+        <testcase name="testFallsBackToDevWhenReleaseFileIsMissing" file="/workspace/app/tests/ReleaseInfoTest.php" line="40" class="App\Tests\ReleaseInfoTest" classname="App.Tests.ReleaseInfoTest" assertions="3" time="0.007721"/>
+        <testsuite name="App\Tests\ReleaseInfoTest::testFallsBackToDevWhenReleaseFileIsUnusable" tests="5" assertions="10" errors="0" failures="0" skipped="0" time="0.026339">
+          <testcase name="testFallsBackToDevWhenReleaseFileIsUnusable with data set &quot;not json&quot;" file="/workspace/app/tests/ReleaseInfoTest.php" line="62" class="App\Tests\ReleaseInfoTest" classname="App.Tests.ReleaseInfoTest" assertions="2" time="0.006839"/>
+          <testcase name="testFallsBackToDevWhenReleaseFileIsUnusable with data set &quot;json scalar&quot;" file="/workspace/app/tests/ReleaseInfoTest.php" line="62" class="App\Tests\ReleaseInfoTest" classname="App.Tests.ReleaseInfoTest" assertions="2" time="0.004283"/>
+          <testcase name="testFallsBackToDevWhenReleaseFileIsUnusable with data set &quot;missing keys&quot;" file="/workspace/app/tests/ReleaseInfoTest.php" line="62" class="App\Tests\ReleaseInfoTest" classname="App.Tests.ReleaseInfoTest" assertions="2" time="0.004420"/>
+          <testcase name="testFallsBackToDevWhenReleaseFileIsUnusable with data set &quot;wrong types&quot;" file="/workspace/app/tests/ReleaseInfoTest.php" line="62" class="App\Tests\ReleaseInfoTest" classname="App.Tests.ReleaseInfoTest" assertions="2" time="0.005472"/>
+          <testcase name="testFallsBackToDevWhenReleaseFileIsUnusable with data set &quot;empty version&quot;" file="/workspace/app/tests/ReleaseInfoTest.php" line="62" class="App\Tests\ReleaseInfoTest" classname="App.Tests.ReleaseInfoTest" assertions="2" time="0.005326"/>
+        </testsuite>
+      </testsuite>
+      <testsuite name="App\Tests\RequestTest" file="/workspace/app/tests/RequestTest.php" tests="5" assertions="11" errors="0" failures="0" skipped="0" time="0.021078">
+        <testcase name="testBuildsFromServerGlobals" file="/workspace/app/tests/RequestTest.php" line="14" class="App\Tests\RequestTest" classname="App.Tests.RequestTest" assertions="5" time="0.005954"/>
+        <testcase name="testDefaultsToGetOnRoot" file="/workspace/app/tests/RequestTest.php" line="33" class="App\Tests\RequestTest" classname="App.Tests.RequestTest" assertions="2" time="0.004740"/>
+        <testcase name="testFallsBackToRootWhenUriHasNoPath" file="/workspace/app/tests/RequestTest.php" line="41" class="App\Tests\RequestTest" classname="App.Tests.RequestTest" assertions="1" time="0.003065"/>
+        <testcase name="testIgnoresNonStringHeaderValues" file="/workspace/app/tests/RequestTest.php" line="48" class="App\Tests\RequestTest" classname="App.Tests.RequestTest" assertions="1" time="0.004415"/>
+        <testcase name="testQueryParamIsNullWhenMissingOrNotAString" file="/workspace/app/tests/RequestTest.php" line="55" class="App\Tests\RequestTest" classname="App.Tests.RequestTest" assertions="2" time="0.002904"/>
+      </testsuite>
+      <testsuite name="App\Tests\ResponseTest" file="/workspace/app/tests/ResponseTest.php" tests="5" assertions="10" errors="0" failures="0" skipped="0" time="0.015678">
+        <testcase name="testTextDefaultsToOkPlainText" file="/workspace/app/tests/ResponseTest.php" line="14" class="App\Tests\ResponseTest" classname="App.Tests.ResponseTest" assertions="3" time="0.002771"/>
+        <testcase name="testTextAcceptsAStatus" file="/workspace/app/tests/ResponseTest.php" line="23" class="App\Tests\ResponseTest" classname="App.Tests.ResponseTest" assertions="1" time="0.003742"/>
+        <testcase name="testJsonEncodesTheData" file="/workspace/app/tests/ResponseTest.php" line="28" class="App\Tests\ResponseTest" classname="App.Tests.ResponseTest" assertions="3" time="0.003129"/>
+        <testcase name="testJsonAcceptsAStatus" file="/workspace/app/tests/ResponseTest.php" line="37" class="App\Tests\ResponseTest" classname="App.Tests.ResponseTest" assertions="1" time="0.003330"/>
+        <testcase name="testBareResponseHasNoBodyOrHeaders" file="/workspace/app/tests/ResponseTest.php" line="42" class="App\Tests\ResponseTest" classname="App.Tests.ResponseTest" assertions="2" time="0.002706"/>
+      </testsuite>
+      <testsuite name="App\Tests\SemverBumpTest" file="/workspace/app/tests/SemverBumpTest.php" tests="18" assertions="30" errors="0" failures="0" skipped="0" time="0.064409">
+        <testsuite name="App\Tests\SemverBumpTest::testBumpsTheRequestedPart" tests="6" assertions="6" errors="0" failures="0" skipped="0" time="0.021859">
+          <testcase name="testBumpsTheRequestedPart with data set &quot;patch&quot;" file="/workspace/app/tests/SemverBumpTest.php" line="30" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="1" time="0.005212"/>
+          <testcase name="testBumpsTheRequestedPart with data set &quot;minor resets patch&quot;" file="/workspace/app/tests/SemverBumpTest.php" line="30" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="1" time="0.002983"/>
+          <testcase name="testBumpsTheRequestedPart with data set &quot;major resets minor and patch&quot;" file="/workspace/app/tests/SemverBumpTest.php" line="30" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="1" time="0.003096"/>
+          <testcase name="testBumpsTheRequestedPart with data set &quot;from zero&quot;" file="/workspace/app/tests/SemverBumpTest.php" line="30" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="1" time="0.002880"/>
+          <testcase name="testBumpsTheRequestedPart with data set &quot;multi-digit parts&quot;" file="/workspace/app/tests/SemverBumpTest.php" line="30" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="1" time="0.004593"/>
+          <testcase name="testBumpsTheRequestedPart with data set &quot;largest accepted part&quot;" file="/workspace/app/tests/SemverBumpTest.php" line="30" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="1" time="0.003096"/>
+        </testsuite>
+        <testsuite name="App\Tests\SemverBumpTest::testRejectsInvalidVersions" tests="11" assertions="22" errors="0" failures="0" skipped="0" time="0.039549">
+          <testcase name="testRejectsInvalidVersions with data set &quot;empty&quot;" file="/workspace/app/tests/SemverBumpTest.php" line="54" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="2" time="0.003050"/>
+          <testcase name="testRejectsInvalidVersions with data set &quot;two parts&quot;" file="/workspace/app/tests/SemverBumpTest.php" line="54" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="2" time="0.003098"/>
+          <testcase name="testRejectsInvalidVersions with data set &quot;four parts&quot;" file="/workspace/app/tests/SemverBumpTest.php" line="54" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="2" time="0.004245"/>
+          <testcase name="testRejectsInvalidVersions with data set &quot;leading v&quot;" file="/workspace/app/tests/SemverBumpTest.php" line="54" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="2" time="0.003505"/>
+          <testcase name="testRejectsInvalidVersions with data set &quot;leading zero&quot;" file="/workspace/app/tests/SemverBumpTest.php" line="54" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="2" time="0.003695"/>
+          <testcase name="testRejectsInvalidVersions with data set &quot;pre-release suffix&quot;" file="/workspace/app/tests/SemverBumpTest.php" line="54" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="2" time="0.004058"/>
+          <testcase name="testRejectsInvalidVersions with data set &quot;letters&quot;" file="/workspace/app/tests/SemverBumpTest.php" line="54" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="2" time="0.003418"/>
+          <testcase name="testRejectsInvalidVersions with data set &quot;negative part&quot;" file="/workspace/app/tests/SemverBumpTest.php" line="54" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="2" time="0.003359"/>
+          <testcase name="testRejectsInvalidVersions with data set &quot;surrounding whitespace&quot;" file="/workspace/app/tests/SemverBumpTest.php" line="54" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="2" time="0.003043"/>
+          <testcase name="testRejectsInvalidVersions with data set &quot;trailing newline&quot;" file="/workspace/app/tests/SemverBumpTest.php" line="54" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="2" time="0.004177"/>
+          <testcase name="testRejectsInvalidVersions with data set &quot;part too large&quot;" file="/workspace/app/tests/SemverBumpTest.php" line="54" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="2" time="0.003900"/>
+        </testsuite>
+        <testcase name="testRejectsUnknownBumpType" file="/workspace/app/tests/SemverBumpTest.php" line="62" class="App\Tests\SemverBumpTest" classname="App.Tests.SemverBumpTest" assertions="2" time="0.003002"/>
+      </testsuite>
+      <testsuite name="App\Tests\TokenFileTest" file="/workspace/app/tests/TokenFileTest.php" tests="4" assertions="5" errors="0" failures="0" skipped="0" time="0.022905">
+        <testcase name="testReadsTheTokenWithoutTrailingNewline" file="/workspace/app/tests/TokenFileTest.php" line="26" class="App\Tests\TokenFileTest" classname="App.Tests.TokenFileTest" assertions="1" time="0.006216"/>
+        <testcase name="testIsNullWhenNoPathIsConfigured" file="/workspace/app/tests/TokenFileTest.php" line="33" class="App\Tests\TokenFileTest" classname="App.Tests.TokenFileTest" assertions="2" time="0.005681"/>
+        <testcase name="testIsNullWhenTheFileDoesNotExist" file="/workspace/app/tests/TokenFileTest.php" line="39" class="App\Tests\TokenFileTest" classname="App.Tests.TokenFileTest" assertions="1" time="0.006366"/>
+        <testcase name="testIsNullWhenTheFileIsBlank" file="/workspace/app/tests/TokenFileTest.php" line="44" class="App\Tests\TokenFileTest" classname="App.Tests.TokenFileTest" assertions="1" time="0.004642"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

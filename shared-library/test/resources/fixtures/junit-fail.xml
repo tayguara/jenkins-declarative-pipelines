@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="unit" tests="6" assertions="9" errors="1" failures="2" skipped="0" time="0.2">
+    <testsuite name="App\Tests\ATest" tests="4" errors="1" failures="1" skipped="0" time="0.1">
+      <testcase name="testOne" class="App\Tests\ATest" time="0.01"/>
+      <testcase name="testTwo" class="App\Tests\ATest" time="0.01"><failure type="PHPUnit\Framework\ExpectationFailedException">Failed asserting that two strings are equal.</failure></testcase>
+      <testcase name="testThree" class="App\Tests\ATest" time="0.01"><error type="TypeError">boom</error></testcase>
+      <testcase name="testFour" class="App\Tests\ATest" time="0.01"/>
+    </testsuite>
+    <testsuite name="App\Tests\BTest" tests="2" errors="0" failures="1" skipped="0" time="0.1">
+      <testcase name="testFive" class="App\Tests\BTest" time="0.01"><failure type="PHPUnit\Framework\ExpectationFailedException">Failed asserting that false is true.</failure></testcase>
+      <testcase name="testSix" class="App\Tests\BTest" time="0.01"/>
+    </testsuite>
+  </testsuite>
+</testsuites>

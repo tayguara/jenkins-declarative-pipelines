@@ -1,0 +1,3 @@
+releasesDir: /srv/deploy/staging
+healthUrl: http://web-staging:8000/health
+credentialsId: deploy-token-staging

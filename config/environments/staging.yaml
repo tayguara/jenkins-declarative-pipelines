@@ -1,0 +1,5 @@
+# Data only: no secrets. The token lives in the Jenkins credential named below.
+# releasesDir must match the path the web container reads in deploy/web/router.php.
+releasesDir: /srv/deploy/staging
+healthUrl: http://web-staging:8000/health
+credentialsId: deploy-token-staging

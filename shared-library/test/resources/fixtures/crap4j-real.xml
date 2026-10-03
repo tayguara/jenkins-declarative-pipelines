@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<crap_result>
+  <project/>
+  <timestamp>2026-10-02 20:37:45</timestamp>
+  <stats>
+    <name>Method Crap Stats</name>
+    <methodCount>16</methodCount>
+    <crapMethodCount>0</crapMethodCount>
+    <crapLoad>0</crapLoad>
+    <totalCrap>54</totalCrap>
+    <crapMethodPercent>0</crapMethodPercent>
+  </stats>
+  <methods>
+    <method>
+      <package>App</package>
+      <className>App\HealthCheck</className>
+      <methodName>__construct</methodName>
+      <methodSignature>__construct(ReleaseInfo $release, Closure $tokenProvider)</methodSignature>
+      <fullMethod>__construct(ReleaseInfo $release, Closure $tokenProvider)</fullMethod>
+      <crap>1</crap>
+      <complexity>1</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+    <method>
+      <package>App</package>
+      <className>App\HealthCheck</className>
+      <methodName>handle</methodName>
+      <methodSignature>handle(Request $request): Response</methodSignature>
+      <fullMethod>handle(Request $request): Response</fullMethod>
+      <crap>5</crap>
+      <complexity>5</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+    <method>
+      <package>App\Http</package>
+      <className>App\Http\Request</className>
+      <methodName>__construct</methodName>
+      <methodSignature>__construct(string $method, string $path, array $query, array $headers)</methodSignature>
+      <fullMethod>__construct(string $method, string $path, array $query, array $headers)</fullMethod>
+      <crap>1</crap>
+      <complexity>1</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+    <method>
+      <package>App\Http</package>
+      <className>App\Http\Request</className>
+      <methodName>fromGlobals</methodName>
+      <methodSignature>fromGlobals(array $server, array $query): self</methodSignature>
+      <fullMethod>fromGlobals(array $server, array $query): self</fullMethod>
+      <crap>8</crap>
+      <complexity>8</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+    <method>
+      <package>App\Http</package>
+      <className>App\Http\Request</className>
+      <methodName>header</methodName>
+      <methodSignature>header(string $name): ?string</methodSignature>
+      <fullMethod>header(string $name): ?string</fullMethod>
+      <crap>1</crap>
+      <complexity>1</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+    <method>
+      <package>App\Http</package>
+      <className>App\Http\Request</className>
+      <methodName>queryParam</methodName>
+      <methodSignature>queryParam(string $name): ?string</methodSignature>
+      <fullMethod>queryParam(string $name): ?string</fullMethod>
+      <crap>2</crap>
+      <complexity>2</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+    <method>
+      <package>App\Http</package>
+      <className>App\Http\Response</className>
+      <methodName>__construct</methodName>
+      <methodSignature>__construct(int $status, string $body, array $headers)</methodSignature>
+      <fullMethod>__construct(int $status, string $body, array $headers)</fullMethod>
+      <crap>1</crap>
+      <complexity>1</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+    <method>
+      <package>App\Http</package>
+      <className>App\Http\Response</className>
+      <methodName>text</methodName>
+      <methodSignature>text(string $body, int $status): self</methodSignature>
+      <fullMethod>text(string $body, int $status): self</fullMethod>
+      <crap>1</crap>
+      <complexity>1</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+    <method>
+      <package>App\Http</package>
+      <className>App\Http\Response</className>
+      <methodName>json</methodName>
+      <methodSignature>json(array $data, int $status): self</methodSignature>
+      <fullMethod>json(array $data, int $status): self</fullMethod>
+      <crap>1</crap>
+      <complexity>1</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+    <method>
+      <package>App</package>
+      <className>App\Kernel</className>
+      <methodName>__construct</methodName>
+      <methodSignature>__construct(ReleaseInfo $release, Closure $tokenProvider)</methodSignature>
+      <fullMethod>__construct(ReleaseInfo $release, Closure $tokenProvider)</fullMethod>
+      <crap>1</crap>
+      <complexity>1</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+    <method>
+      <package>App</package>
+      <className>App\Kernel</className>
+      <methodName>handle</methodName>
+      <methodSignature>handle(Request $request): Response</methodSignature>
+      <fullMethod>handle(Request $request): Response</fullMethod>
+      <crap>7</crap>
+      <complexity>7</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+    <method>
+      <package>App</package>
+      <className>App\Kernel</className>
+      <methodName>nextVersion</methodName>
+      <methodSignature>nextVersion(Request $request): Response</methodSignature>
+      <fullMethod>nextVersion(Request $request): Response</fullMethod>
+      <crap>5</crap>
+      <complexity>5</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+    <method>
+      <package>App</package>
+      <className>App\ReleaseInfo</className>
+      <methodName>__construct</methodName>
+      <methodSignature>__construct(string $version, string $build, string $slot)</methodSignature>
+      <fullMethod>__construct(string $version, string $build, string $slot)</fullMethod>
+      <crap>1</crap>
+      <complexity>1</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+    <method>
+      <package>App</package>
+      <className>App\ReleaseInfo</className>
+      <methodName>fromReleaseRoot</methodName>
+      <methodSignature>fromReleaseRoot(string $root, string $slot): self</methodSignature>
+      <fullMethod>fromReleaseRoot(string $root, string $slot): self</fullMethod>
+      <crap>8</crap>
+      <complexity>8</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+    <method>
+      <package>App</package>
+      <className>App\SemverBump</className>
+      <methodName>bump</methodName>
+      <methodSignature>bump(string $current, string $bump): string</methodSignature>
+      <fullMethod>bump(string $current, string $bump): string</fullMethod>
+      <crap>6</crap>
+      <complexity>6</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+    <method>
+      <package>App</package>
+      <className>App\TokenFile</className>
+      <methodName>read</methodName>
+      <methodSignature>read(?string $path): ?string</methodSignature>
+      <fullMethod>read(?string $path): ?string</fullMethod>
+      <crap>5</crap>
+      <complexity>5</complexity>
+      <coverage>100</coverage>
+      <crapLoad>0</crapLoad>
+    </method>
+  </methods>
+</crap_result>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
+<coverage line-rate="0.60" branch-rate="0" lines-covered="60" lines-valid="100" branches-covered="0" branches-valid="0" complexity="12" version="0.4" timestamp="1790973465">
+  <sources>
+    <source>/workspace/app/src</source>
+  </sources>
+  <packages>
+    <package name="App" line-rate="0.60" branch-rate="0" complexity="12">
+      <classes>
+        <class name="App\SemverBump" filename="SemverBump.php" line-rate="0.60" branch-rate="0" complexity="12">
+          <methods>
+            <method name="bump" signature="string $current, string $bump" line-rate="0.60" branch-rate="0" complexity="4">
+              <lines>
+                <line number="20" hits="3"/>
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="20" hits="3"/>
+          </lines>
+        </class>
+      </classes>
+    </package>
+  </packages>
+</coverage>

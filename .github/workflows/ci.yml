@@ -1,0 +1,197 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  library:
+    name: Library tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+      # Validates the Gradle wrapper checksum by default and caches Gradle's state.
+      - uses: gradle/actions/setup-gradle@v6
+      # Runs JenkinsPipelineUnit tests for every step, every class and the real Jenkinsfile.
+      - run: ./gradlew test
+      - name: Upload test report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: library-test-report
+          path: build/reports/tests
+          retention-days: 7
+          if-no-files-found: ignore
+
+  groovy-lint:
+    name: Groovy lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      # CodeNarc, which npm-groovy-lint runs under the hood, needs a JVM.
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+      - run: npm ci
+      - run: npm run lint:groovy
+
+  php:
+    name: PHP gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: pcov
+          tools: composer:v2
+      - run: composer validate --strict
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      # The same gates the Jenkinsfile runs: code style, static analysis, dependency audit, tests.
+      - run: composer check
+      - name: Coverage summary
+        run: |
+          mkdir -p reports/coverage
+          vendor/bin/phpunit --colors=never --coverage-text --coverage-cobertura reports/coverage/cobertura.xml > reports/coverage.txt
+          {
+            echo '## PHP coverage'
+            echo
+            echo '```text'
+            sed -n '/Summary:/,/^$/p' reports/coverage.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  mutation:
+    name: Mutation testing
+    # Mutation testing is slow, so it does not run in the Jenkins deploy pipeline. It runs here,
+    # in the application's own CI, and only after the fast gates passed.
+    needs: php
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: pcov
+          tools: composer:v2
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - run: composer mutation
+
+  lint:
+    name: Lint (Docker, shell, compose)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: hadolint (controller)
+        uses: hadolint/hadolint-action@v3.5.0
+        with:
+          dockerfile: jenkins/controller/Dockerfile
+          config: .hadolint.yaml
+      - name: hadolint (agent)
+        uses: hadolint/hadolint-action@v3.5.0
+        with:
+          dockerfile: jenkins/agent/Dockerfile
+          config: .hadolint.yaml
+      - name: hadolint (git-server)
+        uses: hadolint/hadolint-action@v3.5.0
+        with:
+          dockerfile: jenkins/git-server/Dockerfile
+          config: .hadolint.yaml
+      - name: shellcheck
+        run: shellcheck scripts/*.sh app/bin/package
+      - name: Compose config
+        # compose.yaml needs a .env (required variables) and the secret files that check-env.sh
+        # writes. The values are throw-away and masked, like in the end-to-end job.
+        run: |
+          admin=$(openssl rand -hex 24); staging=$(openssl rand -hex 24); production=$(openssl rand -hex 24)
+          echo "::add-mask::$admin"
+          echo "::add-mask::$staging"
+          echo "::add-mask::$production"
+          printf 'JENKINS_ADMIN_ID=admin\nJENKINS_ADMIN_PASSWORD=%s\nDEPLOY_TOKEN_STAGING=%s\nDEPLOY_TOKEN_PRODUCTION=%s\n' \
+            "$admin" "$staging" "$production" > .env
+          scripts/check-env.sh
+          docker compose config -q
+          docker compose --profile local-git config -q
+
+  e2e:
+    name: Jenkins end-to-end
+    needs: [library, groovy-lint, php]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # Full history and tags: the mirror served to Jenkins is cloned from this checkout.
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Create .env with throw-away secrets
+        run: |
+          admin=$(openssl rand -hex 24); staging=$(openssl rand -hex 24); production=$(openssl rand -hex 24)
+          echo "::add-mask::$admin"
+          echo "::add-mask::$staging"
+          echo "::add-mask::$production"
+          umask 077
+          printf 'JENKINS_ADMIN_ID=admin\nJENKINS_ADMIN_PASSWORD=%s\nDEPLOY_TOKEN_STAGING=%s\nDEPLOY_TOKEN_PRODUCTION=%s\n' \
+            "$admin" "$staging" "$production" > .env
+      - name: Start the stack
+        run: make up
+      - name: Smoke test (3 builds through the REST API)
+        run: make smoke
+      - name: Collect container logs
+        if: ${{ failure() }}
+        run: docker compose --profile local-git logs --no-color > compose-logs.txt
+      - name: Upload logs
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: jenkins-e2e-logs
+          # .demo/smoke only: .demo/secrets must never be uploaded.
+          path: |
+            compose-logs.txt
+            .demo/smoke
+          include-hidden-files: true
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: Tear down
+        if: ${{ always() }}
+        run: docker compose --profile local-git down -v
