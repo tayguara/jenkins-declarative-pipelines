@@ -210,12 +210,14 @@ esac
 [ "$(web /health | cut -d' ' -f1)" = 401 ] || fail "Health without token" "expected 401"
 pass "Health without token is refused (401)"
 health=$(web /health with-token)
-[ "${health%% *}" = 200 ] && [ "$(printf '%s' "${health#* }" | jq -r '.status')" = ok ] \
-    || fail "Health with token" "got: $health"
+if [ "${health%% *}" != 200 ] || [ "$(printf '%s' "${health#* }" | jq -r '.status')" != ok ]; then
+    fail "Health with token" "got: $health"
+fi
 pass "Health with token is ok" "$(printf '%s' "${health#* }" | jq -c '{slot,version}')"
 next=$(web '/api/next-version?current=1.2.3&bump=minor')
-[ "${next%% *}" = 200 ] && [ "$(printf '%s' "${next#* }" | jq -r '.next')" = 1.3.0 ] \
-    || fail "App endpoint /api/next-version" "got: $next"
+if [ "${next%% *}" != 200 ] || [ "$(printf '%s' "${next#* }" | jq -r '.next')" != 1.3.0 ]; then
+    fail "App endpoint /api/next-version" "got: $next"
+fi
 pass "App endpoint /api/next-version"
 
 # ---------------------------------------------------------------- 6. secret leakage
