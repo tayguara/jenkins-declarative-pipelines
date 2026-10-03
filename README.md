@@ -7,7 +7,7 @@ A declarative Jenkins pipeline with a tested shared library, quality gates and a
 
 ## What this is and why
 
-I built this repository to show the Jenkins setup I would put in front of a client: a short Jenkinsfile that says *what* runs, a shared library that holds *how* it runs, and tests for both. It is the working companion of my article on moving from scripted to declarative pipelines (see [my dev.to profile](https://dev.to/tayguara) for the companion article). Every design decision in the article has a counterpart in this code, mapped in [Design decisions](#design-decisions).
+I built this repository to show the Jenkins setup I would put in front of a client: a short Jenkinsfile that says *what* runs, a shared library that holds *how* it runs, and tests for both. It is the working companion of my article [From scripted to declarative: what 10+ years of Jenkins pipelines taught me](https://dev.to/tayguara/from-scripted-to-declarative-what-10-years-of-jenkins-pipelines-taught-me-about-shared-libraries-2k40). Every design decision in the article has a counterpart in this code, mapped in [Design decisions](#design-decisions).
 
 Everything runs locally, with no accounts, no cloud and no real servers. `docker compose` starts a Jenkins controller, an SSH build agent with PHP, a git server and two web servers that play the roles of staging and production. The sample application is a small PHP service with a SemVer endpoint, so the gates have real code to check.
 
@@ -197,7 +197,7 @@ The classes in `src/io/github/tayguara/ci/` (`Args`, `Reports`, `GateRecords`, `
 
 ## Design decisions
 
-Each decision maps to a section of the companion article ([dev.to/tayguara](https://dev.to/tayguara)).
+Each decision maps to a section of the [companion article](https://dev.to/tayguara/from-scripted-to-declarative-what-10-years-of-jenkins-pipelines-taught-me-about-shared-libraries-2k40).
 
 | Decision | Article section | Where it is here |
 | --- | --- | --- |
