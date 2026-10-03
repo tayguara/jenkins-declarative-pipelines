@@ -16,8 +16,6 @@ services:
     profiles: [local-git]
     build:
       context: ./jenkins/git-server
-      provenance: false
-      sbom: false
     image: jenkins-declarative-pipelines-git-server:local
     command:
       - -c
@@ -56,8 +54,6 @@ services:
   keygen:
     build: &agent-build
       context: ./jenkins/agent
-      provenance: false
-      sbom: false
     image: jenkins-declarative-pipelines-agent:local
     user: "0:0"
     restart: "no"
@@ -132,8 +128,6 @@ services:
   jenkins:
     build:
       context: ./jenkins/controller
-      provenance: false
-      sbom: false
     image: jenkins-declarative-pipelines-controller:local
     ports:
       - "127.0.0.1:${JENKINS_HTTP_PORT:-8080}:8080"
