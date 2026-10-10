@@ -165,7 +165,7 @@ services:
 
   # "Load balancer" for the staging environment: serves /srv/deploy/staging/current.
   web-staging:
-    image: php:8.4.26-cli-alpine3.24
+    image: php:8.5.11-cli-alpine3.24
     command: ["php", "-d", "realpath_cache_size=0", "-d", "display_errors=0", "-d", "expose_php=0", "-S", "0.0.0.0:8000", "/srv/router/router.php"]
     user: "1000:1000"
     read_only: true
@@ -189,7 +189,7 @@ services:
     networks: [ci]
 
   web-production:
-    image: php:8.4.26-cli-alpine3.24
+    image: php:8.5.11-cli-alpine3.24
     command: ["php", "-d", "realpath_cache_size=0", "-d", "display_errors=0", "-d", "expose_php=0", "-S", "0.0.0.0:8000", "/srv/router/router.php"]
     user: "1000:1000"
     read_only: true
