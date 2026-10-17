@@ -44,7 +44,7 @@ dependencies {
     // Same Groovy as Jenkins core. JenkinsPipelineUnit does not support Groovy 4.
     implementation 'org.codehaus.groovy:groovy-all:2.4.21'
     // Provides @NonCPS at compile time; Jenkins supplies it at runtime.
-    compileOnly 'com.cloudbees:groovy-cps:4348.ve8c60d51e508'
+    compileOnly 'com.cloudbees:groovy-cps:4390.va_61c07eb_2f72'
 
     testImplementation 'com.lesfurets:jenkins-pipeline-unit:1.31'
     testImplementation platform('org.junit:junit-bom:6.1.3')
