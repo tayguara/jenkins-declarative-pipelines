@@ -1,6 +1,6 @@
-FROM composer:2.10.3 AS composer
+FROM composer:2.11.0 AS composer
 
-FROM jenkins/ssh-agent:9.0.0-jdk21
+FROM jenkins/ssh-agent:9.3.3-jdk21
 
 # PHP 8.4 comes straight from Debian 13 (trixie), the base of this image.
 # pcov provides line coverage for PHPUnit without the Xdebug overhead.
