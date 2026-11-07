@@ -10,7 +10,7 @@
     "lint:groovy": "npm-groovy-lint --failon warning Jenkinsfile \"shared-library/vars/*.groovy\" \"shared-library/src/**/*.groovy\""
   },
   "devDependencies": {
-    "npm-groovy-lint": "18.0.0"
+    "npm-groovy-lint": "19.0.0"
   },
   "overrides": {
     "axios": "1.20.0"
